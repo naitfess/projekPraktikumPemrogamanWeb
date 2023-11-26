@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (empty($_SESSION['username'])) {
+  header("location:loginpage.php");
+}
+$username = $_SESSION['username'];
+?>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -84,7 +91,7 @@
       style="background: #fff"
     >
       <div class="container">
-        <a class="navbar-brand" href="../mainpage.html"
+        <a class="navbar-brand" href="../mainpage.php"
           ><img src="../img/logo.png" alt="" style="width: 170px"
         /></a>
         <button
@@ -100,19 +107,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav nav-underline fs-6 fw-semibold ms-auto">
-            <a class="nav-link text-dark mx-2" href="../mainpage.html #events"
+            <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
               >Events</a
             >
-            <a class="nav-link text-dark mx-2" href="./register-volunteer.html"
+            <a class="nav-link text-dark mx-2" href="./register-volunteer.php"
               >Become a Volunteer</a
             >
-            <a class="nav-link text-dark mx-2" href="./volunteer-list.html"
+            <a class="nav-link text-dark mx-2" href="./volunteer-list.php"
               >Volunteer</a
             >
-            <a class="nav-link active text-dark mx-2" href="./donor.html"
+            <a class="nav-link active text-dark mx-2" href="./donor.php"
               >Donor</a
             >
-            <a class="text-light mx-2 py-2 px-3" href="./donate.html">Donate</a>
+            <a class="text-light mx-2 py-2 px-3" href="./donate.php">Donate</a>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle text-dark"
@@ -121,16 +128,16 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                username
+               <?php echo "$username" ?>
               </a>
               <ul class="dropdown-menu radius-0 py-0 mt-2">
                 <li>
                   <p class="dropdown-item fw-semibold mt-2">
-                    Hello, <br />username
+                    Hello, <br /><?php echo "$username" ?>
                   </p>
                 </li>
                 <li>
-                  <a class="dropdown-item fw-semibold py-2 border-top" href="#"
+                  <a class="dropdown-item fw-semibold py-2 border-top" href="../session/logout.php"
                     >Logout</a
                   >
                 </li>

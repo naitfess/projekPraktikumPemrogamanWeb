@@ -1,3 +1,7 @@
+<?php
+  session_start();
+  
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -90,29 +94,17 @@
         <h1 class="text-center mb-5 font-1" ;>
           Welcome<span class="text-danger">.</span>
         </h1>
-        <form action="#">
-          <input
-            class="form-control py-3 mb-3 radius-0 w-75 mx-auto border-2 border-dark font-2"
-            type="text"
-            placeholder="Username"
-            required
-          />
-          <input
-            class="form-control py-3 mb-5 radius-0 w-75 mx-auto border-2 border-dark font-2"
-            type="password"
-            placeholder="Password"
-            required
-          />
+        <form action="./session/cek_login.php" method="POST">
+          <input class="form-control py-3 mb-3 radius-0 w-75 mx-auto border-2 border-dark font-2" type="text" name="username" placeholder="Username" required>
+          <input class="form-control py-3 mb-5 radius-0 w-75 mx-auto border-2 border-dark font-2"  type="password" name="password" placeholder="Password" required>
           <p class="text-center font-2">
             No account?
             <a href="#" id="show-create" class="text-danger fw-semibold"
-              >Create one</a
-            >
+              >Create one</a>
           </p>
           <button
             type="submit"
-            class="btn btn-dark d-flex mx-auto px-4 py-2 radius-0 font-2"
-          >
+            class="btn btn-dark d-flex mx-auto px-4 py-2 radius-0 font-2">
             Sign-in
           </button>
         </form>
@@ -124,22 +116,22 @@
         <h1 class="text-center mb-5 font-1" ;>
           Join us<span class="text-danger">.</span>
         </h1>
-        <form action="#">
+        <form action="./session/proses_signup.php" method="POST">
           <input
             class="form-control font-2 py-3 mb-3 radius-0 w-75 mx-auto border-2 border-dark"
-            type="text"
+            type="text" name="username"
             placeholder="Username"
             required
           />
           <input
             class="form-control font-2 py-3 mb-3 radius-0 w-75 mx-auto border-2 border-dark"
-            type="email"
+            type="email" name="email"
             placeholder="email@example.com"
             required
           />
           <input
             class="form-control font-2 py-3 mb-5 radius-0 w-75 mx-auto border-2 border-dark"
-            type="password"
+            type="password" name="pass"
             placeholder="Password"
             required
           />
