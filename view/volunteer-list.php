@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['username'])) {
-  header("location:loginpage.php");
+  header("location:../loginpage.php?pesan=belum_login");
 }
 $username = $_SESSION['username'];
 ?>
@@ -107,9 +107,15 @@ $username = $_SESSION['username'];
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav nav-underline fs-6 fw-semibold ms-auto">
-            <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
-              >Events</a
-            >
+          <?php
+            if($username == "admin"){?>
+              <a class="nav-link text-dark mx-2" href="admin.php"
+              >Admin</a>  
+            <?php
+            }else{?>
+              <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
+                >Events</a>
+            <?php } ?>
             <a class="nav-link text-dark mx-2" href="./register-volunteer.php"
               >Become a Volunteer</a
             >
@@ -160,6 +166,10 @@ $username = $_SESSION['username'];
     <section class="list pb-5">
       <div class="container my-5">
         <div class="row row-cols-1 row-cols-md-5 g-4">
+          <?php
+          include '../session/koneksi.php';
+          $query2=mysqli_query($konek,"select * from volunteer");
+          while($data2=mysqli_fetch_array($query2)){ ?>
           <div class="col">
             <div class="card radius-0">
               <img
@@ -168,76 +178,12 @@ $username = $_SESSION['username'];
                 alt="..."
               />
               <div class="card-body">
-                <h5 class="card-title">Full Name</h5>
-                <p class="card-text">Event:</p>
+                <h5 class="card-title"><?php echo $data2['name_volunteer'] ?></h5>
+                <p class="card-text">Event: <?php echo $data2['event'] ?></p>
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="card radius-0">
-              <img
-                src="../img/profilepicture.webp"
-                class="card-img-top radius-0"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Full Name</h5>
-                <p class="card-text">Event:</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card radius-0">
-              <img
-                src="../img/profilepicture.webp"
-                class="card-img-top radius-0"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Full Name</h5>
-                <p class="card-text">Event:</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card radius-0">
-              <img
-                src="../img/profilepicture.webp"
-                class="card-img-top radius-0"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Full Name</h5>
-                <p class="card-text">Event:</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card radius-0">
-              <img
-                src="../img/profilepicture.webp"
-                class="card-img-top radius-0"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Full Name</h5>
-                <p class="card-text">Event:</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card radius-0">
-              <img
-                src="../img/profilepicture.webp"
-                class="card-img-top radius-0"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Full Name</h5>
-                <p class="card-text">Event:</p>
-              </div>
-            </div>
-          </div>
+          <?php } ?>
         </div>
       </div>
     </section>

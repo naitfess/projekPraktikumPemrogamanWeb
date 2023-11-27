@@ -110,14 +110,19 @@ $username = $_SESSION['username'];
       position: static;
       top: 0%;
     }
+
+    .none{
+      text-decoration: none;
+    }
   </style>
 </head>
 
 <body>
-  <?php
+    <?php
       echo '<script type ="text/JavaScript">';  
       echo 'alert("Selamat Datang Wahai Admin!:>3")';  
-      echo '</script>';?>
+      echo '</script>';
+    ?>
   <!-- navbar -->
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark py-4" style="background: #fff">
     <div class="container">
@@ -129,7 +134,7 @@ $username = $_SESSION['username'];
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav nav-underline fs-6 fw-semibold ms-auto">
-          <a class="nav-link text-dark mx-2" href="../mainpage.php#events">Events</a>
+          <a class="nav-link text-dark mx-2" href="admin.php">Admin</a>
           <a class="nav-link text-dark mx-2" href="./register-volunteer.php">Become a Volunteer</a>
           <a class="nav-link text-dark mx-2" href="./volunteer-list.php">Volunteer</a>
           <a class="nav-link text-dark mx-2" href="./donor.php">Donor</a>
@@ -181,46 +186,48 @@ $username = $_SESSION['username'];
       <div class="container">
         <h3 class="font-2 fw-light">New Donate</h3>
         <table class="table table-hover">
+          <?php
+            if(isset($_GET['pesan']))
+            {
+              if($_GET['pesan'] == "berhasil")
+              {
+              echo "Deletion was succesfull!";
+              }
+            }
+          ?>
           <tr class="row">
-            <td class="col-1 fw-semibold">Id</td>
+            <td class="col-1 fw-semibold">No</td>
             <td class="col fw-semibold">Full Name</td>
             <td class="col fw-semibold">Email</td>
             <td class="col fw-semibold">Amount</td>
             <td class="col fw-semibold">VA Number</td>
             <td class="col-2 fw-semibold">Action</td>
           </tr>
-          <tr class="row">
-            <td class="col-1">1</td>
-            <td class="col">Seftian Alung</td>
-            <td class="col">example@goolge.com</td>
-            <td class="col">100</td>
-            <td class="col">1279813298</td>
-            <td class="col-2">
-              <button type="submit" class="btn btn-success py-0 radius-0 fw-semibold">
-                CONFIRM
-              </button>
-              |
-              <button type="submit" class="btn btn-danger py-0 radius-0 fw-semibold">
-                DECLINE
-              </button>
-            </td>
-          </tr>
-          <tr class="row">
-            <td class="col-1">2</td>
-            <td class="col">bagas Duta</td>
-            <td class="col">example@goolge.com</td>
-            <td class="col">1000</td>
-            <td class="col">189869132</td>
-            <td class="col-2">
-              <button type="submit" class="btn btn-success py-0 radius-0 fw-semibold">
-                CONFIRM
-              </button>
-              |
-              <button type="submit" class="btn btn-danger py-0 radius-0 fw-semibold">
-                DECLINE
-              </button>
-            </td>
-          </tr>
+          <?php
+            $i = 1;
+            include '../session/koneksi.php';
+            $query=mysqli_query($konek,"select * from admin");
+            while($data=mysqli_fetch_array($query)){ ?>       
+              <tr class="row">
+                <td class="col-1"><?php echo $i ?></td>
+                <td class="col"><?php echo $data['name'] ?></td>
+                <td class="col"><?php echo $data['email'] ?></td>
+                <td class="col"><?php echo $data['donate'] ?></td>
+                <td class="col"><?php echo $data['va_number'] ?></td>
+                <td class="col-2">
+                  <button type="submit" class="btn btn-success py-0 radius-0 fw-semibold">
+                    <a href="../session/confirm.php?id=<?php echo $data['id'] ?>" class="none text-light">CONFIRM</a>
+                  </button>
+                  |
+                  <button type="submit" class="btn btn-danger py-0 radius-0 fw-semibold">
+                    <a href="../session/decline.php?id=<?php echo $data['id'] ?>" class="none text-light">DECLINE</a>
+                  </button>
+                </td>
+              </tr>
+            <?php
+            $i++; 
+            }          
+          ?>
         </table>
       </div>
     </div>
@@ -233,42 +240,35 @@ $username = $_SESSION['username'];
         <h3 class="font-2 fw-light">Donor List</h3>
         <table class="table table-hover">
           <tr class="row">
-            <td class="col-1 fw-semibold">Id</td>
+            <td class="col-1 fw-semibold">No</td>
             <td class="col fw-semibold">Full Name</td>
             <td class="col fw-semibold">Email</td>
             <td class="col fw-semibold">Amount</td>
             <td class="col-2 fw-semibold">Action</td>
           </tr>
+          <?php
+            $j = 1;
+            include '../session/koneksi.php';
+            $query1=mysqli_query($konek,"select * from donatur");
+            while($data1=mysqli_fetch_array($query1)){ ?>
           <tr class="row">
-            <td class="col-1">1</td>
-            <td class="col">Seftian Alung</td>
-            <td class="col">example@goolge.com</td>
-            <td class="col">100</td>
+          <td class="col-1"><?php echo $j ?></td>
+                <td class="col"><?php echo $data1['name'] ?></td>
+                <td class="col"><?php echo $data1['donatur_email'] ?></td>
+                <td class="col"><?php echo $data1['donate'] ?></td>
             <td class="col-2">
               <button type="submit" class="btn btn-success py-0 radius-0 fw-semibold">
-                UPDATE
+              <a href="./update_donor.php?id=<?php echo $data1['no_id'] ?>" class="none text-light">UPDATE</a>
               </button>
               |
               <button type="submit" class="btn btn-danger py-0 radius-0 fw-semibold">
-                DELETE
+              <a href="../session/delete.php?id=<?php echo $data1['no_id'] ?>" class="none text-light">DELETE</a>
               </button>
             </td>
           </tr>
-          <tr class="row">
-            <td class="col-1">2</td>
-            <td class="col">bagas Duta</td>
-            <td class="col">example@goolge.com</td>
-            <td class="col">1000</td>
-            <td class="col-2">
-              <button type="submit" class="btn btn-success py-0 radius-0 fw-semibold">
-                UPDATE
-              </button>
-              |
-              <button type="submit" class="btn btn-danger py-0 radius-0 fw-semibold">
-                DELETE
-              </button>
-            </td>
-          </tr>
+          <?php $j++;
+            }
+            ?>
         </table>
       </div>
     </div>
@@ -280,7 +280,7 @@ $username = $_SESSION['username'];
         <h3 class="font-2 fw-light">Volunteer List</h3>
         <table class="table table-hover">
           <tr class="row">
-            <td class="col-1 fw-semibold">Id</td>
+            <td class="col-1 fw-semibold">No</td>
             <td class="col fw-semibold">Full Name</td>
             <td class="col fw-semibold">Email</td>
             <td class="col fw-semibold">Phone Number</td>
@@ -288,40 +288,27 @@ $username = $_SESSION['username'];
             <td class="col fw-semibold">Event</td>
             <td class="col-2 fw-semibold">Action</td>
           </tr>
+          <?php
+            $k = 1;
+            include '../session/koneksi.php';
+            $query2=mysqli_query($konek,"select * from volunteer");
+            while($data2=mysqli_fetch_array($query2)){ ?>
           <tr class="row">
-            <td class="col-1">1</td>
-            <td class="col">Seftian Alung</td>
-            <td class="col">example@goolge.com</td>
-            <td class="col">0123456778</td>
-            <td class="col">Student</td>
-            <td class="col">Sport Charity Run</td>
+            <td class="col-1"><?php echo $k ?></td>
+            <td class="col"><?php echo $data2['name_volunteer'] ?></td>
+            <td class="col"><?php echo $data2['email_volunteer'] ?></td>
+            <td class="col"><?php echo $data2['phone'] ?></td>
+            <td class="col"><?php echo $data2['occupation'] ?></td>
+            <td class="col"><?php echo $data2['event'] ?></td>
             <td class="col-2">
-              <button type="submit" class="btn btn-success py-0 radius-0 fw-semibold">
-                UPDATE
-              </button>
-              |
               <button type="submit" class="btn btn-danger py-0 radius-0 fw-semibold">
-                DELETE
+                <a href="../session/delete_volunteer.php?id_volunteer=<?php echo $data2['id_volunteer']?>" class="none text-light">DELETE</a>
               </button>
             </td>
           </tr>
-          <tr class="row">
-            <td class="col-1">2</td>
-            <td class="col">bagas Duta</td>
-            <td class="col">example@goolge.com</td>
-            <td class="col">0123456778</td>
-            <td class="col">Student</td>
-            <td class="col">Sport Charity Run</td>
-            <td class="col-2">
-              <button type="submit" class="btn btn-success py-0 radius-0 fw-semibold">
-                UPDATE
-              </button>
-              |
-              <button type="submit" class="btn btn-danger py-0 radius-0 fw-semibold">
-                DELETE
-              </button>
-            </td>
-          </tr>
+          <?php } 
+          $j++;
+          ?>
         </table>
       </div>
     </div>

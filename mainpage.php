@@ -1,5 +1,6 @@
 <?php
  session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -130,7 +131,7 @@
     <nav id="navbar" class="navbar navbar-expand-lg fixed-top py-4"
     >
       <div class="container">
-        <a class="navbar-brand" href="#"
+        <a class="navbar-brand" href="./mainpage.php"
           ><img src="img/logo-white.png" alt="" style="width: 170px"
         /></a>
         <button
@@ -146,7 +147,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav nav-underline fs-6 fw-semibold ms-auto">
-            <a class="nav-link text-light mx-2" href="#events">Events</a>
+          <?php
+            if(empty($_SESSION['username'])){?>
+              <a class="nav-link text-light mx-2" href="#events">Events</a>
+                
+            <?php
+            }else{
+              $username = $_SESSION['username'];
+              if($username == "admin"){
+              ?>
+                <a class="nav-link text-light mx-2" href="./view/admin.php">Admin</a>
+                <?php }else{?>
+                  <a class="nav-link text-light mx-2" href="#events">Events</a>
+                  <?php  } 
+             } ?>
             <a class="nav-link text-light mx-2" href="./view/register-volunteer.php">Become a Volunteer</a>
             <a class="nav-link text-light mx-2" href="./view/volunteer-list.php">Volunteer</a>
             <a class="nav-link text-light mx-2" href="./view/donor.php">Donor</a>
@@ -155,12 +169,9 @@
             if(empty($_SESSION['username'])){ ?>
             <a class="nav-link text-light mx-2" id="show-login" href="./loginpage.php" target="_blank">Login</a>
             <?php
-            }else{
-              $username = $_SESSION['username'];
-            }
-            ?>
-            <!-- jika user sudah login maka tulisan login akan hilang dan diganti dengan dropdown -->
-            <li class="nav-item dropdown">
+            }else{ 
+              $username = $_SESSION['username']; ?>
+              <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle text-light"
                 href="#"
@@ -168,13 +179,9 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <?php 
-                if(empty($_SESSION['username'])){?>
-                  username
-                <?php
-                }else{
-                  echo "$username";}
-                  ?>
+              <?php
+                  echo "$username"; 
+                ?>
               </a>
               <ul class="dropdown-menu radius-0 py-0 mt-2">
                 <li>
@@ -193,6 +200,10 @@
                 </li>
               </ul>
             </li>
+            <?php }
+            ?>
+            <!-- jika user sudah login maka tulisan login akan hilang dan diganti dengan dropdown -->
+            
           </div>
         </div>
       </div>

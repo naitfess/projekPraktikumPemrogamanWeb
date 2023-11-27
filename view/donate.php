@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['username'])) {
-  header("location:loginpage.php");
+  header("location:../loginpage.php?pesan=belum_login");
 }
 $username = $_SESSION['username'];
 ?>
@@ -58,7 +58,7 @@ $username = $_SESSION['username'];
       }
 
       .font-1 {
-        font-family: "fairplay Display", serif;
+        font-family: "playfair Display", serif;
         font-weight: bold;
       }
 
@@ -91,9 +91,15 @@ $username = $_SESSION['username'];
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav nav-underline fs-6 fw-semibold ms-auto">
-            <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
-              >Events</a
-            >
+          <?php
+            if($username == "admin"){?>
+              <a class="nav-link text-dark mx-2" href="admin.php"
+              >Admin</a>  
+            <?php
+            }else{?>
+              <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
+                >Events</a>
+            <?php } ?>
             <a class="nav-link text-dark mx-2" href="./register-volunteer.php"
               >Become a Volunteer</a
             >
@@ -156,7 +162,16 @@ $username = $_SESSION['username'];
               aria-valuemin="0"
               aria-valuemax="100"
             >
-              <div class="progress-bar bg-warning" style="width: 75%"></div>
+            <?php
+                include '../session/koneksi.php';
+                $hasil = 0;
+                $query=mysqli_query($konek,"select * from donatur");
+                while($data=mysqli_fetch_array($query)){
+                $hasil = $hasil + $data['donate'];
+                }
+                $progres=($hasil/20000)*100;
+            ?>
+              <div class="progress-bar bg-warning" style="width: <?php echo $progres?>%"></div>
             </div>
             <div class="d-flex justify-content-evenly mt-3">
               <p
@@ -164,14 +179,14 @@ $username = $_SESSION['username'];
                 style="font-family: 'Poppins', serif"
               >
                 Goal:
-                <span class="fw-light" style="color: #e36955">$1000</span>
+                <span class="fw-light" style="color: #e36955">$20000</span>
               </p>
               <p
                 class="fs-5 py-2 my-auto fw-semibold"
                 style="font-family: 'Poppins', serif"
               >
                 Raised:
-                <span class="fw-light" style="color: #e36955">$750</span>
+                <span class="fw-light" style="color: #e36955">$<?php echo $hasil?></span>
               </p>
             </div>
             <div
@@ -179,13 +194,14 @@ $username = $_SESSION['username'];
             ></div>
           </div>
           <div class="col">
-            <form action="">
+            <form action="../session/input_donate.php" method="POST">
               <div class="mb-3">
                 <input
                   type="text"
                   class="form-control form-control-lg w-100 radius-0"
                   placeholder="Full Name *"
                   style="height: 12%"
+                  name="name"
                   required
                 />
               </div>
@@ -195,6 +211,7 @@ $username = $_SESSION['username'];
                   class="form-control form-control-lg w-100 radius-0"
                   placeholder="Email Address *"
                   style="height: 12%"
+                  name="email"
                   required
                 />
               </div>
@@ -283,13 +300,14 @@ $username = $_SESSION['username'];
                   rows="4"
                   placeholder="Message"
                   style="max-height: 24.8%"
+                  name="komentar"
                 ></textarea>
               </div>
               <div class="form-check mb-2">
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  name="anonymous"
+                  name="anonim"
                   value="yes"
                   id="gridCheck"
                 />

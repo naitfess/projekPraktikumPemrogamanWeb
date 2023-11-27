@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['username'])) {
-  header("location:loginpage.php");
+  header("location:../loginpage.php?pesan=belum_login");
 }
 $username = $_SESSION['username'];
 ?>
@@ -107,9 +107,15 @@ $username = $_SESSION['username'];
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav nav-underline fs-6 fw-semibold ms-auto">
-            <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
-              >Events</a
-            >
+          <?php
+            if($username == "admin"){?>
+              <a class="nav-link text-dark mx-2" href="admin.php"
+              >Admin</a>  
+            <?php
+            }else{?>
+              <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
+                >Events</a>
+            <?php } ?>
             <a class="nav-link text-dark mx-2" href="./register-volunteer.php"
               >Become a Volunteer</a
             >
@@ -177,49 +183,46 @@ $username = $_SESSION['username'];
               aria-valuemax="100"
               style="height: 20px"
             >
-              <div class="progress-bar bg-warning" style="width: 75%">75%</div>
+            <?php
+                include '../session/koneksi.php';
+                $hasil = 0;
+                $query=mysqli_query($konek,"select * from donatur");
+                while($data=mysqli_fetch_array($query)){
+                $hasil = $hasil + $data['donate'];
+                }
+                $progres=($hasil/20000)*100;
+            ?>
+              <div class="progress-bar bg-warning" style="width: <?php echo $progres ?>%"><?php echo $progres?>%</div>
             </div>
             <div class="d-flex justify-content-between mt-2">
               <p class="fw-semibold">
                 Goal: <span class="text-danger fw-light">$20000</span>
               </p>
               <p class="fw-semibold">
-                Raised: <span class="text-danger fw-light">$17500</span>
+                Raised: <span class="text-danger fw-light"><?php echo $hasil?></span>
               </p>
             </div>
           </div>
-          <div class="card radius-0 mb-4">
-            <div class="card-header">$1000</div>
-            <div class="card-body">
-              <h5 class="card-title radius-0">Bagas Duta Prasetya</h5>
-              <p class="card-text">
-                Message : With supporting text below as a natural lead-in to
-                additional content.
-              </p>
-              <p class="card-text">Date :</p>
-            </div>
-          </div>
-          <div class="card radius-0 mb-4">
-            <div class="card-header">$1000</div>
-            <div class="card-body">
-              <h5 class="card-title radius-0">Bagas Duta Prasetya</h5>
-              <p class="card-text">
-                Message : With supporting text below as a natural lead-in to
-                additional content.
-              </p>
-              <p class="card-text">Date :</p>
-            </div>
-          </div>
-          <div class="card radius-0 mb-4">
-            <div class="card-header">$1000</div>
-            <div class="card-body">
-              <h5 class="card-title radius-0">Bagas Duta Prasetya</h5>
-              <p class="card-text">
-                Message : With supporting text below as a natural lead-in to
-                additional content.
-              </p>
-              <p class="card-text">Date :</p>
-            </div>
+          <?php
+            $query=mysqli_query($konek,"select * from donatur");
+            while($data=mysqli_fetch_array($query)){ ?>
+              <div class="card radius-0 mb-4">
+                <div class="card-header">$ <?php echo $data['donate'] ?></div>
+                <div class="card-body">
+                  <h5 class="card-title radius-0">
+                    <?php
+                    if($data['anonim'] == "yes"){
+                      echo "Anonymous"; 
+                    }else{
+                        echo $data['name']; 
+                    }?>
+                  </h5>
+                  <p class="card-text">
+                  Message: <?php echo $data['komentar'] ?>
+                  </p>
+                </div>
+              </div>
+          <?php } ?>
           </div>
         </div>
       </div>

@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (empty($_SESSION['username'])) {
+  header("location:../loginpage.php");
+}
+$username = $_SESSION['username'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,6 +50,13 @@
         Please complete <br />
         the payment.
       </h1>
+      <?php
+      include '../session/koneksi.php';
+        $id=$_GET['id'];
+        $query=mysqli_query($konek,"SELECT * from admin where id=$id");
+        $data =mysqli_fetch_array($query);
+        
+      ?>
       <div class="mx-5 text-start font-2 fs-5 my-4">
         <table>
           <tr>
@@ -52,17 +67,17 @@
           <tr>
             <td>VA Number</td>
             <td class="px-2">:</td>
-            <td>123220112</td>
+            <td><?php echo $data['va_number'] ?></td>
           </tr>
           <tr>
             <td>Name</td>
             <td class="px-2">:</td>
-            <td>Alung</td>
+            <td><?php echo $data['name'] ?></td>
           </tr>
           <tr>
             <td>Total</td>
             <td class="px-2">:</td>
-            <td>100</td>
+            <td>$ <?php echo $data['donate'] ?></td>
           </tr>
         </table>
       </div>
@@ -74,7 +89,7 @@
         Proof of payment will immediately <br />
         be sent to your email. <br />
         <a
-          href="../mainpage.html"
+          href="../mainpage.php"
           style="text-decoration: none"
           class="text-danger"
           >Back to main page.</a

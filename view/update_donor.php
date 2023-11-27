@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['username'])) {
-  header("location:../loginpage.php?pesan=belum_login");
+  header("location:loginpage.php");
 }
 $username = $_SESSION['username'];
 ?>
@@ -9,7 +9,7 @@ $username = $_SESSION['username'];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Become a Volunteer</title>
+    <title>Update Data</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -56,6 +56,16 @@ $username = $_SESSION['username'];
         background: #da270c;
         transition: 0.5s;
       }
+
+      .font-1 {
+        font-family: "fairplay Display", serif;
+        font-weight: bold;
+      }
+
+      .font-2 {
+        font-family: "Poppins", serif;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -81,7 +91,7 @@ $username = $_SESSION['username'];
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav nav-underline fs-6 fw-semibold ms-auto">
-            <?php
+          <?php
             if($username == "admin"){?>
               <a class="nav-link text-dark mx-2" href="admin.php"
               >Admin</a>  
@@ -90,9 +100,7 @@ $username = $_SESSION['username'];
               <a class="nav-link text-dark mx-2" href="../mainpage.php#events"
                 >Events</a>
             <?php } ?>
-            <a
-              class="nav-link active text-dark mx-2"
-              href="./register-volunteer.php"
+            <a class="nav-link text-dark mx-2" href="./register-volunteer.php"
               >Become a Volunteer</a
             >
             <a class="nav-link text-dark mx-2" href="./volunteer-list.php"
@@ -113,7 +121,7 @@ $username = $_SESSION['username'];
               <ul class="dropdown-menu radius-0 py-0 mt-2">
                 <li>
                   <p class="dropdown-item fw-semibold mt-2">
-                    Hello, <br /> <?php echo $username ?>
+                    Hello, <br /> <?php echo "$username" ?>
                   </p>
                 </li>
                 <li>
@@ -129,75 +137,37 @@ $username = $_SESSION['username'];
     </nav>
     <!-- hero -->
     <section class="hero text-center">
-      <h1 class="fw-bold" style="font-size: 4rem; padding: 4.5rem 0">
-        Become a Volunteer
-      </h1>
+      <h1 class="fw-bold" style="font-size: 4rem; padding: 4.5rem 0">Update</h1>
     </section>
     <div class="container fw-semibold">
-      <p class="redbg p-2 text-light">HOME / BECOME A VOLUNTEER</p>
+      <p class="redbg p-2 text-light">HOME / UPDATE</p>
     </div>
     <!-- form -->
     <section class="form-volunteer" style="min-height: 100vh">
       <div class="container mt-5">
-        <h1 class="fw-bold text-center">Register Now</h1>
-        <h6 class="text-center">JOIN US NOW</h6>
+        <h1 class="fw-bold text-center">
+            Make sure to update the data  <br> carefully, accurate and up to date.
+        </h1>
+        <h6 class="text-center">UPDATE DATA NOW</h6>
       </div>
-      <div class="container mt-5 d-flex">
-        <div class="row d-flex justify-content-center">
-          <div class="col">
-            <img src="../img/volunteer.jpg" alt="volunteer" class="w-100" />
-            <h4
-              style="font-family: 'Fairplay Display', serif"
-              class="fw-bold fs-2 my-3"
-            >
-              Requirements
-            </h4>
-            <p class="w-100">
-              The main aim of this volunteer activity is to support efforts to
-              raise funds to provide aid to Palestine. Through volunteer
-              participation, we are trying to seek donations by holding several
-              events to help the Palestinian community needs, provides hope, and
-              supports initiatives humanity in the region.
-            </p>
-            <ul>
-              <li>Willingness to stick to a schedule or time commitment.</li>
-              <li>Compliance with work ethics and professional behavior.</li>
-              <li>Ability to work in a team and good communication.</li>
-            </ul>
-            <div
-              class="d-flex justify-content-evenly border-2 border-top border-light-subtle mt-5"
-            >
-              <p
-                class="py-3 my-auto fw-semibold"
-                style="font-family: 'Fairplay Display', serif"
-              >
-                Call Us <br /><span
-                  class="fw-light"
-                  style="color: #e36955; font-family: 'Poppins'"
-                  >0123 456 7898</span
-                >
-              </p>
-              <p
-                class="py-3 my-auto fw-semibold"
-                style="font-family: 'Fairplay Display', serif"
-              >
-                Send Email <br /><span
-                  class="fw-light"
-                  style="color: #e36955; font-family: 'Poppins'"
-                  >asd@gmail.com</span
-                >
-              </p>
-            </div>
-          </div>
-          <div class="col">
-            <form action="../session/input_volunteer.php" method="POST">
+      <?php
+        include '../session/koneksi.php';
+        $id = $_GET['id'];
+        $query=mysqli_query($konek,"select * from donatur where no_id = '$id'");
+        $data=mysqli_fetch_array($query);
+      ?>
+      <div class="container mt-5 w-50">
+          <div class="">
+            <form action="../session/update_data.php" method="POST">
+            <input type="hidden" name="no_id" value="<?php echo $data['no_id']; ?>">
               <div class="mb-3">
                 <input
                   type="text"
                   class="form-control form-control-lg w-100 radius-0"
                   placeholder="Full Name *"
-                  name="name_volunteer"
                   style="height: 12%"
+                  name="name"
+                  value="<?php echo $data['name'] ?>"
                   required
                 />
               </div>
@@ -206,94 +176,124 @@ $username = $_SESSION['username'];
                   type="email"
                   class="form-control form-control-lg w-100 radius-0"
                   placeholder="Email Address *"
-                  name="email_volunteer"
                   style="height: 12%"
+                  name="email"
+                  value="<?php echo $data['donatur_email'] ?>"
                   required
                 />
               </div>
-              <div class="mb-3">
+              <div class="mb-3 d-flex justify-content-between">
                 <input
-                  type="text"
-                  class="form-control form-control-lg w-100 radius-0"
-                  placeholder="Phone Number *"
-                  name="phone"
-                  style="height: 12%"
-                  required
+                  type="radio"
+                  class="btn-check"
+                  name="options"
+                  id="option-1"
+                  autocomplete="off"
                 />
-              </div>
-              <div class="mb-3">
+                <label
+                  class="btn btn-outline-danger radius-0 py-3 px-4"
+                  for="option-1"
+                  >$10</label
+                >
                 <input
-                  type="text"
-                  class="form-control form-control-lg w-100 radius-0"
-                  placeholder="Address"
-                  name="address"
-                  style="height: 12%"
+                  type="radio"
+                  class="btn-check"
+                  name="options"
+                  id="option-2"
+                  autocomplete="off"
                 />
-              </div>
-              <div class="mb-3">
+                <label
+                  class="btn btn-outline-danger radius-0 py-3 px-4"
+                  for="option-2"
+                  >$20</label
+                >
                 <input
-                  type="text"
-                  class="form-control form-control-lg w-100 radius-0"
-                  placeholder="Occupation"
-                  name="occupation"
-                  style="height: 12%"
+                  type="radio"
+                  class="btn-check"
+                  name="options"
+                  id="option-3"
+                  autocomplete="off"
                 />
+                <label
+                  class="btn btn-outline-danger radius-0 py-3 px-4"
+                  for="option-3"
+                  >$50</label
+                >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="options"
+                  id="option-4"
+                  autocomplete="off"
+                />
+                <label
+                  class="btn btn-outline-danger radius-0 py-3 px-4"
+                  for="option-4"
+                  >$100</label
+                >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="options"
+                  id="custom"
+                  autocomplete="off"
+                />
+                <label
+                  class="btn btn-outline-danger radius-0 py-3 px-5 w-50"
+                  for="custom"
+                  >Custom Amount</label
+                >
               </div>
-              <div class="mb-3 justify-content-between d-flex">
+              <div class="input-group mb-3">
                 <input type="radio" class="btn-check" autocomplete="on" />
                 <label
-                  class="btn btn-danger radius-0 fs-5"
-                  style="padding: 34.5px 20px"
-                  >Choose Event:</label
+                  class="btn btn-danger input-group-text py-3 px-4 radius-0"
+                  for="custom"
+                  >$</label
                 >
                 <input
-                  type="radio"
-                  class="btn-check"
-                  name="event"
-                  id="a"
-                  value="Charity Gala Dinner"
-                  autocomplete="off"
+                  type="number"
+                  min="10"
+                  id="donate-amount"
+                  name="donate-amount"
+                  value="<?php echo $data['donate'] ?>"
+                  class="form-control radius-0 py-3"
+                  required
                 />
-                <label class="btn btn-outline-danger radius-0 px-3 py-4" for="a"
-                  >Charity <br />
-                  Gala Dinner</label
-                >
+              </div>
+              <div class="mb-2">
+                <textarea
+                  class="form-control form-control-lg radius-0 p-3"
+                  rows="4"
+                  placeholder="Message"
+                  style="max-height: 24.8%"
+                  name="komentar"
+                ><?php echo $data['komentar'] ?></textarea>
+              </div>
+              <div class="form-check mb-2">
                 <input
-                  type="radio"
-                  class="btn-check"
-                  name="event"
-                  value="Art Exhibition for Palestine"
-                  id="b"
-                  autocomplete="off"
-                  checked
+                  class="form-check-input"
+                  type="checkbox"
+                  name="anonim"
+                  value="yes"
+                  id="gridCheck"
                 />
-                <label class="btn btn-outline-danger radius-0 px-3 py-4" for="b"
-                  >Art Exhibition <br />
-                  for Palestine</label
-                >
-                <input
-                  type="radio"
-                  class="btn-check"
-                  name="event"
-                  value="Palestine Film Festival"
-                  id="c"
-                  autocomplete="off"
-                />
-                <label class="btn btn-outline-danger radius-0 px-3 py-4" for="c"
-                  >Palestine <br />
-                  Film Festival</label
-                >
+                <label class="form-check-label" for="gridCheck">
+                  Don't show my name publicy
+                </label>
               </div>
               <button
-                class="btn btn-warning radius-0 px-4 py-2 text-light fw-semibold"
+                class="btn btn-warning radius-0 px-4 py-3 text-light fw-semibold"
                 type="submit"
               >
-                Send
+                Update Now
               </button>
             </form>
           </div>
-        </div>
       </div>
+      <h1 class="text-center font-2 fw-light mt-5 fs-5 py-4">
+        Thank you to all our donors!
+      </h1>
     </section>
     <!-- footer -->
     <footer
@@ -302,6 +302,7 @@ $username = $_SESSION['username'];
     >
       Copyright - 2023
     </footer>
+    <script src="../script/script-donate.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

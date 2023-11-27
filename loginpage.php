@@ -97,6 +97,16 @@
         <form action="./session/cek_login.php" method="POST">
           <input class="form-control py-3 mb-3 radius-0 w-75 mx-auto border-2 border-dark font-2" type="text" name="username" placeholder="Username" required>
           <input class="form-control py-3 mb-5 radius-0 w-75 mx-auto border-2 border-dark font-2"  type="password" name="password" placeholder="Password" required>
+          <?php
+            if(isset($_GET['pesan']))
+            {
+              if($_GET['pesan'] == "gagal")
+              {
+              ?><span class="font-2 d-flex justify-content-center">Username or password incorrect!</span>
+              <?php
+              }
+            }
+          ?>
           <p class="text-center font-2">
             No account?
             <a href="#" id="show-create" class="text-danger fw-semibold"
