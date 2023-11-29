@@ -16,7 +16,7 @@
     or die(mysqli_error($konek));
     if($query)
     {   
-        header("location:../view/admin.php");
+        header("location:../view/admin.php?pesan=update");
     }
     else 
     {

@@ -4,7 +4,7 @@
     $query=mysqli_query($konek,"DELETE FROM volunteer where id_volunteer=$id_volunteer");
    if($query)
     {
-        header("location:../view/admin.php?pesan=berhasil");
+        header("location:../view/admin.php?pesan=delete_volunteer");
     }
     else 
     {

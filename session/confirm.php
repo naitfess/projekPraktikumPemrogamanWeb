@@ -15,7 +15,7 @@
     or die(mysqli_error($konek));
     $query=mysqli_query($konek,"DELETE FROM admin where id=$id");
     if($query2){
-        header("location:../view/admin.php?pesan=berhasil");
+        header("location:../view/admin.php?pesan=confirm");
     }else{
         header("location:../view/admin.php?pesan=gagal");
     }

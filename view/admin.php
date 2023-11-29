@@ -189,9 +189,13 @@ $username = $_SESSION['username'];
           <?php
             if(isset($_GET['pesan']))
             {
-              if($_GET['pesan'] == "berhasil")
+              if($_GET['pesan'] == "confirm")
               {
-              echo "Deletion was succesfull!";
+              echo "Data successfully confirmed!";
+              }else if($_GET['pesan'] == "decline"){
+                echo "Data successfulu declined!";
+              }else if($_GET['pesan'] == "gagal"){
+                echo "Failed!";
               }
             }
           ?>
@@ -239,6 +243,17 @@ $username = $_SESSION['username'];
       <div class="container">
         <h3 class="font-2 fw-light">Donor List</h3>
         <table class="table table-hover">
+        <?php
+            if(isset($_GET['pesan']))
+            {
+              if($_GET['pesan'] == "update")
+              {
+              echo "Data successfully updated!";
+              }else if($_GET['pesan'] == "delete"){
+                echo "Data successfulu deleted!";
+              }
+            }
+          ?>
           <tr class="row">
             <td class="col-1 fw-semibold">No</td>
             <td class="col fw-semibold">Full Name</td>
@@ -279,6 +294,15 @@ $username = $_SESSION['username'];
       <div class="container">
         <h3 class="font-2 fw-light">Volunteer List</h3>
         <table class="table table-hover">
+        <?php
+            if(isset($_GET['pesan']))
+            {
+              if($_GET['pesan'] == "delete_volunteer")
+              {
+              echo "Data successfully deleted!";
+              }
+            }
+          ?>
           <tr class="row">
             <td class="col-1 fw-semibold">No</td>
             <td class="col fw-semibold">Full Name</td>
@@ -306,8 +330,9 @@ $username = $_SESSION['username'];
               </button>
             </td>
           </tr>
-          <?php } 
-          $j++;
+          <?php 
+          $k++;
+          } 
           ?>
         </table>
       </div>
